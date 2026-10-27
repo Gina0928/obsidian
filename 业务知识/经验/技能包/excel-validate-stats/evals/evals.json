@@ -1,0 +1,112 @@
+{
+  "skill_name": "excel-validate-stats",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "统计一下 D:/compareFile/demo/src/main/resources/static/武穴1512/1512-I_重复行合并.xlsx 里的库存总数量和金额总数量，不需要再验证了",
+      "expected_output": "直接对已校验过的文件计算统计。库存总数量 = 498617.303，金额总数量 = 4620031.289381705000133328",
+      "files": [],
+      "assertions": [
+        {"name": "output-has-quantity", "description": "Output contains 库存总数量 with a numeric value"},
+        {"name": "output-has-amount", "description": "Output contains 金额总数量 with a numeric value"},
+        {"name": "quantity-exact-match", "description": "库存总数量 exactly equals 498617.303"},
+        {"name": "amount-exact-match", "description": "金额总数量 exactly equals 4620031.289381705000133328"},
+        {"name": "no-unnecessary-validation", "description": "No dedup/validate step was run (stats-only path)"}
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "帮我对比三江1518的两个库存文件，源文件是 D:/compareFile/demo/src/main/resources/static/三江1518/1518-I_重复行合并.xlsx，对比文件是 D:/compareFile/demo/src/main/resources/static/三江1518/1518-II_重复行合并.xlsx，生成差异文件然后统计库存数量和金额，最后交叉验证差异是否一致",
+      "expected_output": "Side-by-side comparison report showing source stats, compare stats, deltas, diff file stats, and cross-validation result. Quantity validation should pass (delta == -diff).",
+      "files": [],
+      "assertions": [
+        {"name": "output-has-report", "description": "Output contains a structured comparison report"},
+        {"name": "output-has-source-stats", "description": "Report includes file A (source) stats with 库存总数量 and 金额总数量"},
+        {"name": "output-has-compare-stats", "description": "Report includes file B (compare) stats with 库存总数量 and 金额总数量"},
+        {"name": "output-has-delta", "description": "Report includes 差额计算 (A-B) with 库存数量差 and 金额数量差"},
+        {"name": "output-has-diff-file", "description": "Report includes diff file (差异文件) stats"},
+        {"name": "output-has-cross-validation", "description": "Report includes cross-validation (交叉验证) section"},
+        {"name": "quantity-validation-passes", "description": "Quantity validation shows match (delta == -diff)"},
+        {"name": "txt-files-generated", "description": "Same-name TXT files are generated for all three Excel files"}
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "对比这两个Excel库存文件：D:/compareFile/demo/src/main/resources/static/武穴1512/1512-I.xlsx 和 D:/compareFile/demo/src/main/resources/static/武穴1512/1512-I_重复行合并.xlsx，看看它们的库存数量和金额差异，需要交叉验证",
+      "expected_output": "Side-by-side comparison report for 武穴1512 files. Cross-validates quantity delta against diff file.",
+      "files": [],
+      "assertions": [
+        {"name": "output-has-report", "description": "Output contains a structured comparison report"},
+        {"name": "output-has-delta", "description": "Report includes 差额计算 (A-B)"},
+        {"name": "output-has-cross-validation", "description": "Report includes cross-validation section"},
+        {"name": "txt-files-generated", "description": "Same-name TXT files are generated for all three Excel files"}
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "帮我初始化校验一下这个库存表 D:/compareFile/demo/src/main/resources/static/武穴1512/1512-I.xlsx，先去重再统计库存总数量和金额总数量",
+      "expected_output": "Recognizes 初始化校验 as a Workflow A trigger: runs the validate/dedup (merge) step on the single file (Java `validate` mode if demo-0.0.1-SNAPSHOT.jar is found, otherwise the bundled pure-Python fallback), then computes 库存总数量 and 金额总数量 with Decimal precision. Output shows the merged file stats.",
+      "files": [],
+      "assertions": [
+        {"name": "recognizes-init-validate-trigger", "description": "The phrase 初始化校验 routes to Workflow A (validate then stats), not a generic file read"},
+        {"name": "runs-validate-step", "description": "The validate/dedup step is invoked to deduplicate/merge the single file (Java if JAR present, else Python fallback)"},
+        {"name": "output-has-quantity", "description": "Output contains 库存总数量 with a numeric value"},
+        {"name": "output-has-amount", "description": "Output contains 金额总数量 with a numeric value"}
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "校验一下库存 D:/compareFile/demo/src/main/resources/static/三江1518/1518-I_重复行合并.xlsx，这个已经校验过了，直接算总数量和总金额就行",
+      "expected_output": "Recognizes 校验一下库存 as a stats-only trigger. Since the file is already merged (name contains 重复行合并) and user said 已校验, skips the validate/dedup step and runs calculate_stats.py directly. Output shows 库存总数量 and 金额总数量.",
+      "files": [],
+      "assertions": [
+        {"name": "recognizes-inventory-check-trigger", "description": "The phrase 校验一下库存 / 库存校验 triggers Workflow A stats-only path"},
+        {"name": "skips-unnecessary-validation", "description": "No validate/dedup step is run because the file is already merged and user said 已校验/不用验证"},
+        {"name": "output-has-quantity", "description": "Output contains 库存总数量 with a numeric value"},
+        {"name": "output-has-amount", "description": "Output contains 金额总数量 with a numeric value"}
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "统计 D:/compareFile/demo/src/main/resources/static/武穴1512/1512-I_重复行合并.xlsx 的库存总数量和金额总数量",
+      "expected_output": "After execution, a result report is always emitted and must contain deterministic metric data: 文件名, 数据行数, 库存总数量 (Decimal exact), 金额总数量 (Decimal exact), and the .txt 存档路径. The numbers are exact (not estimated/rounded) and consistent with the saved .txt.",
+      "files": [],
+      "assertions": [
+        {"name": "report-always-emitted", "description": "A result report is output after every execution (not just a prose summary)"},
+        {"name": "report-has-deterministic-quantity", "description": "Report contains 库存总数量 with an exact numeric (Decimal) value"},
+        {"name": "report-has-deterministic-amount", "description": "Report contains 金额总数量 with an exact numeric (Decimal) value"},
+        {"name": "report-has-row-count", "description": "Report contains 数据行数 (row count metric)"},
+        {"name": "report-has-txt-path", "description": "Report references the saved .txt stats file path (authoritative record)"},
+        {"name": "numbers-not-estimated", "description": "Quantities/amounts are exact, not rounded estimates or vague prose"}
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "帮我对比三江1518的两个库存文件并交叉验证：源文件 D:/compareFile/demo/src/main/resources/static/三江1518/1518-I_重复行合并.xlsx，对比文件 D:/compareFile/demo/src/main/resources/static/三江1518/1518-II_重复行合并.xlsx",
+      "expected_output": "A full result report is emitted with deterministic metrics for both files, the A-B delta, diff-file stats, an explicit ✓/✗ cross-validation verdict, and each .txt path. Numbers are exact (Decimal).",
+      "files": [],
+      "assertions": [
+        {"name": "report-always-emitted", "description": "A result report is output after every execution"},
+        {"name": "report-has-both-file-metrics", "description": "Report contains 库存总数量 and 金额总数量 for both file A and file B"},
+        {"name": "report-has-delta", "description": "Report contains 差额 (A-B) with exact numeric values"},
+        {"name": "report-has-cross-validation-verdict", "description": "Report contains an explicit cross-validation result (✓ 匹配 / ✗ 不匹配)"},
+        {"name": "report-has-txt-paths", "description": "Report references the .txt stats file paths for the Excel files"}
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "统计 D:/compareFile/demo/src/main/resources/static/武穴1512/1512-I_重复行合并.xlsx 的库存，给出完整报告：Excel总行数、是否有重复行、库存总数量、金额总数量，用表格展示",
+      "expected_output": "After execution, a Markdown-table result report is emitted containing: 文件名, Excel 总行数 (含表头), 数据行数, 是否有重复行 (✓ 无 / ✗ 存在 N 行), 库存总数量 (Decimal), 金额总数量 (Decimal), and the .txt 存档路径. The table numbers match the stdout and saved .txt exactly.",
+      "files": [],
+      "assertions": [
+        {"name": "report-as-table", "description": "The result report is presented as a Markdown table"},
+        {"name": "report-has-excel-total-rows", "description": "Report contains Excel 总行数 (total rows including header)"},
+        {"name": "report-has-dup-status", "description": "Report contains 是否有重复行 / 重复行判定 with a ✓ or ✗ verdict"},
+        {"name": "report-has-deterministic-quantity", "description": "Report contains 库存总数量 with an exact numeric (Decimal) value"},
+        {"name": "report-has-deterministic-amount", "description": "Report contains 金额总数量 with an exact numeric (Decimal) value"},
+        {"name": "report-has-txt-path", "description": "Report references the saved .txt stats file path"},
+        {"name": "numbers-not-estimated", "description": "Quantities/amounts are exact, not rounded estimates or vague prose"}
+      ]
+    }
+  ]
+}

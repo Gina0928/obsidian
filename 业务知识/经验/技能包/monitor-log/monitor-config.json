@@ -1,0 +1,19 @@
+{
+  "defaultEnv": "test",
+  "envs": {
+    "test": {
+      "aliases": ["测试", "测试环境", "jy_wms测试", "test"],
+      "monitorBase": "https://monitor-test.selline.cn",
+      "monitorEnv": "test",
+      "monitorAuth": "",
+      "note": "日志导出接口 /sysLog/loggerLog/export，参数 providerApps/executeDate(yyyy-MM-dd)/executeTimeRange(HH:mm:ss - HH:mm:ss, 空格转+)/level/className/traceId/message(空格分隔多关键词用+)；返回 xlsx 文件（PK 头），用 openpyxl 解析，日志内容列含多行堆栈"
+    },
+    "prod-yas": {
+      "aliases": ["雅斯生产", "生产", "prod", "yas生产"],
+      "monitorBase": "https://monitor-yas.myt11.com",
+      "monitorEnv": "prod-yas",
+      "monitorAuth": "",
+      "note": "同 test 的导出接口与参数格式"
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "editorStatus": {
+    "isTextInserting": false
+  },
+  "providers": [
+    {
+      "tag": "DeepSeek",
+      "vendor": "DeepSeek",
+      "options": {
+        "apiKey": "sk-919ffdd249af4682b7fc207d7c8f89af",
+        "baseURL": "https://api.deepseek.com",
+        "model": "deepseek-chat",
+        "parameters": {}
+      }
+    }
+  ],
+  "systemTags": [
+    "System",
+    "系统"
+  ],
+  "newChatTags": [
+    "NewChat",
+    "新对话"
+  ],
+  "userTags": [
+    "User",
+    "我"
+  ],
+  "roleEmojis": {
+    "assistant": "✨",
+    "system": "🔧",
+    "newChat": "🚀",
+    "user": "💬"
+  },
+  "promptTemplates": [
+    {
+      "title": "Prompt example",
+      "template": "Tell me a joke"
+    },
+    {
+      "title": "Translation",
+      "template": "Translate the following content into English：{{s}}"
+    },
+    {
+      "title": "One-sentence summary",
+      "template": "{{s}} Summarize the above content in one sentence"
+    }
+  ],
+  "enableInternalLink": true,
+  "enableInternalLinkForAssistantMsg": true,
+  "answerDelayInMilliseconds": 2000,
+  "confirmRegenerate": true,
+  "enableTagSuggest": true,
+  "tagSuggestMaxLineLength": 22,
+  "enableExportToJSONL": false,
+  "enableReplaceTag": false,
+  "enableDefaultSystemMsg": false,
+  "defaultSystemMsg": "",
+  "enableStreamLog": false
+}

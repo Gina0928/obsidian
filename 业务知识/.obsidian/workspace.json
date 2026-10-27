@@ -1,0 +1,258 @@
+{
+  "main": {
+    "id": "71a391836f1f1295",
+    "type": "split",
+    "children": [
+      {
+        "id": "ed15c0b08b4d7515",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "6fb43bf22cfdfe4a",
+            "type": "leaf",
+            "state": {
+              "type": "split-diff-view",
+              "state": {
+                "aFile": "业务知识/资源/openClaw/安装.md",
+                "bFile": "业务知识/资源/openClaw/安装.md",
+                "aRef": ""
+              },
+              "icon": "diff",
+              "title": "Diff: 安装  (Working Tree)"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "fe12b1b9b00793f6",
+    "type": "split",
+    "children": [
+      {
+        "id": "219f906f3f11f89e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "61e6cf87a6b31c64",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "文件列表"
+            }
+          },
+          {
+            "id": "9a406dfd2153aac7",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "搜索"
+            }
+          },
+          {
+            "id": "04759d8d869e1d83",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "书签"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "69ce763d16d3fc3f",
+    "type": "split",
+    "children": [
+      {
+        "id": "80d47013663b6282",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "bedfa11add765611",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "反向链接"
+            }
+          },
+          {
+            "id": "b25ca1e567b254c5",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "软件破解/2025Typora像素级破解教程（新旧版可用）.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "2025Typora像素级破解教程（新旧版可用） 的出链列表"
+            }
+          },
+          {
+            "id": "ac2e6aefe35627f1",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "标签"
+            }
+          },
+          {
+            "id": "6dcc0c845d8a6ee3",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "添加笔记属性"
+            }
+          },
+          {
+            "id": "48b1f6f9be38a47a",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "claudeCode/安装使用.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "安装使用 的大纲"
+            }
+          },
+          {
+            "id": "60eed989a16635ab",
+            "type": "leaf",
+            "state": {
+              "type": "copilot-chat-view",
+              "state": {},
+              "icon": "message-square",
+              "title": "Copilot"
+            }
+          },
+          {
+            "id": "ebc88c7e2e557283",
+            "type": "leaf",
+            "state": {
+              "type": "git-view",
+              "state": {},
+              "icon": "git-pull-request",
+              "title": "Source Control"
+            }
+          }
+        ],
+        "currentTab": 6
+      }
+    ],
+    "direction": "horizontal",
+    "width": 200
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "obsidian-importer:Open Importer": false,
+      "obsidian-local-images-plus:Local Images Plus  0.16.4\r\nLocalize attachments (plugin folder)": false,
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false,
+      "bases:新建数据库": false,
+      "copilot:Open Copilot Chat": false,
+      "obsidian-git:Open Git source control": false
+    }
+  },
+  "active": "6fb43bf22cfdfe4a",
+  "lastOpenFiles": [
+    "资源/openClaw/安装.md",
+    "经验/技能.md",
+    "经验/技能问答.md",
+    "未命名.base",
+    "资源/python/环境准备.md",
+    "资源/claudeCode/安装使用.md",
+    "资源/软件破解/2025Typora像素级破解教程（新旧版可用）.md",
+    "经验/技能包/db-cli/scripts/hive_exec.py",
+    "经验/技能包/db-cli/scripts/dbquery.py",
+    "经验/技能包/db-cli/scripts/dbq",
+    "经验/技能包/db-cli/config/connections.yaml",
+    "经验/技能包/db-cli/_user_meta.json",
+    "经验/技能包/db-cli/SKILL.md",
+    "经验/技能包/db-cli/scripts",
+    "经验/技能包/db-cli/config",
+    "经验/技能包/db-cli",
+    "经验/技能包/content-factory/prompts/voice-cloner.md",
+    "经验/技能包/content-factory/prompts/story-overlay.md",
+    "经验/技能包/content-factory/prompts/research-pipeline.md",
+    "经验/技能包/content-factory/prompts/remix-engine.md",
+    "经验/技能包/content-factory/prompts/polish-pass.md",
+    "经验/技能包/content-factory/prompts/headlines.md",
+    "经验/技能包/content-factory/prompts/first-draft.md",
+    "经验/技能包/content-factory/prompts/empathy-rewrite.md",
+    "经验/技能包/content-factory/prompts/clarity-pass.md",
+    "经验/技能包/content-factory/prompts/argument-builder.md",
+    "经验/技能包/content-factory/_skillhub_meta.json",
+    "经验/技能包/content-factory/SKILL.md",
+    "经验/技能包/content-factory/README.md",
+    "经验/技能包/bug-investigator/SKILL.md",
+    "经验/技能包/bug-investigator/report-template.md",
+    "经验/技能包/async-callback-rollback/references/case-asn-2026-09-10.md",
+    "经验/技能包/async-callback-rollback/SKILL.md",
+    "经验/技能包/analyze-slow-sql/SKILL.md",
+    "经验/技能包/数据平台排错指南/references/warehouse-layers.md",
+    "经验/技能包/数据平台排错指南/references/projects.md",
+    "经验/技能包/wecom-unified/_icon.svg",
+    "经验/技能包/minimax-docx/_icon.svg",
+    "_resources/安装/7a78f4e41b579b4ab877837f4cac76f7_MD5.jpg",
+    "Pasted image 20260729153342.png",
+    "_resources/Pasted image 20260729151152.png",
+    "_resources/Pasted image 20260729150835.png",
+    "_resources/Pasted image 20260710093005.png",
+    "_resources/企业微信截图_17815087134907.png",
+    "_resources/企业微信截图_1781508555422.png",
+    "_resources/kafka大批量推送消息，偏移量提交失败重复消费/cf0e3acaa4dfce672a261576ebfb0fcd_MD5.jpg"
+  ]
+}

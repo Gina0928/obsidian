@@ -1,0 +1,430 @@
+# db-cli 连接注册表 —— 唯一的连接信息真源
+#
+# 权限要求：chmod 600（含生产库凭据）
+# 改密码只改这里；各 AI 工具的 mcp.json 不再承载数据库连接。
+#
+# 2026-09-08 依据《销领开发使用手册》+ information_schema 实测校准：
+#   - 新增 yas-scm-new（此前缺失）
+#   - 各实例 databases 字段改为实测真实库名列表
+#   - note 补充官方实例名（mysql-xxx）
+#
+# 字段说明
+#   env       环境分组：yas=雅斯 / wky=万客缘 / hmt=好码特 / test=测试
+#   engine    mysql | hive | presto | es
+#   databases 该实例上实测存在的业务库（information_schema.schemata 实测）
+#   readonly  true 时脚本强制拦截一切非 SELECT 语句
+#
+# 寻址方式（三选一）
+#   环境/库    yas/jy_order
+#   库名       jy_order        （命中多个环境时列出候选，不猜）
+#   实例名     yas-order
+
+defaults: &def
+  readonly: true
+  connect_timeout: 8
+  query_timeout: 120
+  max_rows: 200
+
+instances:
+
+  # ---------------- 雅斯 yas ----------------
+  yas-order:
+    <<: *def
+    env: yas
+    engine: mysql
+    host: rm-bp1q1459x6djo5kf0xo.mysql.rds.aliyuncs.com
+    port: 3306
+    user: db_viewer
+    password: "2ZywvdxCqN2"
+    databases: [jy_order, jy_order_history]
+    note: 雅斯订单库（官方实例名 mysql-order）
+
+  yas-data:
+    <<: *def
+    env: yas
+    engine: mysql
+    host: rm-bp13t7e0z001e04i05o.mysql.rds.aliyuncs.com
+    port: 3306
+    user: db_viewer
+    password: "2ZywvdxCqN2"
+    databases: [jy_data, jy_azkaban, jy_data_tek, jy_data_bak, jy_cboard, jy_canal_manager]
+    note: 雅斯数据库（官方 mysql-data；DMatrix 取数配置、Azkaban 元数据、canal、cboard）
+
+  yas-batchstk:
+    <<: *def
+    env: yas
+    engine: mysql
+    host: rn-bp17bn2gkbf41pe01-clustert39-l8.mysql.rds.aliyuncs.com
+    port: 3306
+    user: db_viewer
+    password: "2ZywvdxCqN2"
+    databases: [jy_batchstk, jy_salestk, jy_after_sale, jy_aps, jy_b2b, jy_hp, jy_pms, jy_roc, jy_vc, jy_yunbao, yb_merchant, yb_oms, yb_pmc, t_payment, jy_eyun_ass, jy_dmt, jy_catering]
+    note: 雅斯批次库存库（官方 mysql-many-pms，用备库地址；jy_pms 供应商域在此）
+
+  yas-finance:
+    <<: *def
+    env: yas
+    engine: mysql
+    host: rn-bp1fmnl3s8v38wi01-clusteru51-l3.mysql.rds.aliyuncs.com
+    port: 3306
+    user: db_viewer
+    password: "2ZywvdxCqN2"
+    databases: [jy_finance, jy_finance_backup]
+    note: 雅斯财务库（官方 mysql-finance，用备库地址）
+
+  yas-wms:
+    <<: *def
+    env: yas
+    engine: mysql
+    host: rn-bp1x29z3g5k6lh201-clusterk2-l8.mysql.rds.aliyuncs.com
+    port: 3306
+    user: db_viewer
+    password: "2ZywvdxCqN2"
+    databases: [jy_wms]
+    note: 雅斯仓储库（官方 mysql-wms-new，用备库地址）
+
+  yas-scm-new:
+    <<: *def
+    env: yas
+    engine: mysql
+    host: rm-bp14l076uhi49s2isbo.mysql.rds.aliyuncs.com
+    port: 3306
+    user: db_viewer
+    password: "2ZywvdxCqN2"
+    databases: [scm_wms, scm_scs, scm_tms]
+    note: 雅斯 SCM 域库（官方 mysql-scm-new；2026-09-08 从使用手册补入）
+
+  yas-proto:
+    <<: *def
+    env: yas
+    engine: mysql
+    host: rm-bp1151j106lak7koawo.mysql.rds.aliyuncs.com
+    port: 3306
+    user: db_viewer
+    password: "2ZywvdxCqN2"
+    databases: [baize, jy_monitor, jy_sso, jy_workflow, jy_msg, jy_dlink, jy_batch_file, jy_print_cloud, b_print, spider_flow, t-gateway, master-data-excel, web_sql405, nacos_config142, xxl_job_202, xxl_job_220, otter]
+    note: 雅斯系统实例（官方 mysql-system；实例上无 jy_proto，主业务库为 baize，另有 jy_msg/jy_sso/jy_monitor 等系统库）
+
+  yas-dcs:
+    <<: *def
+    env: yas
+    engine: mysql
+    host: rm-bp17e7m4dk00or24aqo.mysql.rds.aliyuncs.com
+    port: 3306
+    user: db_viewer
+    password: "2ZywvdxCqN2"
+    databases: [jy_dcs, jy_glp, jy_tms, jy_feixian, feixian_wms, feixian_pms, fire_im, t_quanyou2, tyloo]
+    note: 雅斯供应链库（官方 mysql-fire-feixian；jy_dcs/jy_glp/jy_tms/飞象系在此）
+
+  yas-market:
+    <<: *def
+    env: yas
+    engine: mysql
+    host: rm-bp1wi1gw0g061fv6q9o.mysql.rds.aliyuncs.com
+    port: 3306
+    user: db_viewer
+    password: "2ZywvdxCqN2"
+    databases: [jy_market]
+    note: 雅斯营销库（官方 mysql-market）
+
+  yas-search:
+    <<: *def
+    env: yas
+    engine: mysql
+    host: rm-bp1lev83y71k6z29yuo.mysql.rds.aliyuncs.com
+    port: 3306
+    user: db_viewer
+    password: "2ZywvdxCqN2"
+    databases: [jy_search, zq_product, ty_product, jy_mcp, sl_tcq, sl_tcq_test]
+    note: 雅斯搜索/商品库（官方 mysql-product；jy_search 与 zq/ty_product 同实例）
+
+  yas-star:
+    <<: *def
+    env: yas
+    engine: mysql
+    host: rm-bp1287bztg177w73loo.mysql.rds.aliyuncs.com
+    port: 3306
+    user: db_viewer
+    password: "2ZywvdxCqN2"
+    databases: [jy_star, jy_star_data, jy_recommend]
+    note: 雅斯星级库（官方 mysql-star；含 jy_recommend）
+
+  yas-hive:
+    <<: *def
+    env: yas
+    engine: hive
+    host: 114.55.7.61
+    port: 10000
+    user: root
+    password: ""
+    databases: [app, gdm, fdm, dim, ods, bdm, test]
+    note: 雅斯 Hive 数仓（走 hive39 venv）
+
+  yas-presto:
+    <<: *def
+    env: yas
+    engine: presto
+    host: 114.55.7.61
+    port: 8889
+    user: root
+    password: ""
+    catalog: hive
+    databases: [app, gdm, fdm, dim]
+    note: 雅斯 Presto 入口（REST，外网可达）
+
+  yas-es:
+    <<: *def
+    env: yas
+    engine: es
+    host: 10.30.0.93
+    port: 9200
+    user: ""
+    password: ""
+    note: 雅斯 ES，index 名查 jy_data.dmtx_data_serv_extra_config WHERE ds_type=2
+
+  # ---------------- 万客缘 wky ----------------
+  wky-data:
+    <<: *def
+    env: wky
+    engine: mysql
+    host: rm-bp113l9wkuaiu310rco.mysql.rds.aliyuncs.com
+    port: 3306
+    user: db_viewer
+    password: "2ZywvdxCqN2"
+    databases: [jy_data, jy_azkaban, jy_data_tek, jy_data_bak, jy_cboard, jy_canal_manager]
+    note: 万客缘数据库（官方 mysql-data）
+
+  wky-order:
+    <<: *def
+    env: wky
+    engine: mysql
+    host: rm-bp1s81h48m38tb455fo.mysql.rds.aliyuncs.com
+    port: 3306
+    user: db_viewer
+    password: "2ZywvdxCqN2"
+    databases: [jy_order, jy_order_history]
+    note: 万客缘订单库（官方 mysql-order）
+
+  wky-batchstk:
+    <<: *def
+    env: wky
+    engine: mysql
+    host: rm-bp146349d69exj16xto.mysql.rds.aliyuncs.com
+    port: 3306
+    user: db_viewer
+    password: "2ZywvdxCqN2"
+    databases: [jy_batchstk, jy_salestk, jy_after_sale, jy_aps, jy_b2b, jy_hp, jy_pms, jy_roc, jy_vc, jy_yunbao, yb_merchant, yb_oms, yb_pmc, t_payment, jy_eyun_ass, jy_dmt, jy_catering]
+    note: 万客缘批次库存库（官方 mysql-many-pms；jy_pms 供应商域在此）
+
+  wky-finance:
+    <<: *def
+    env: wky
+    engine: mysql
+    host: rm-bp1u078v2f8uapo8y7o.mysql.rds.aliyuncs.com
+    port: 3306
+    user: db_viewer
+    password: "2ZywvdxCqN2"
+    databases: [jy_finance, jy_finance_backup]
+    note: 万客缘财务库（官方 mysql-finance）
+
+  wky-proto:
+    <<: *def
+    env: wky
+    engine: mysql
+    host: rm-bp1s9b14s350i8qer6o.mysql.rds.aliyuncs.com
+    port: 3306
+    user: db_viewer
+    password: "2ZywvdxCqN2"
+    databases: [baize, jy_ems, jy_msg, jy_monitor, jy_sso, jy_workflow, jy_dlink, jy_batch_file, b_print, spider_flow, t-gateway, fire_im, otter, nacos_config142, xxl_job_202, xxl_job_220]
+    note: 万客缘系统实例（官方 mysql-system；实例上无 jy_proto）
+
+  wky-dcs:
+    <<: *def
+    env: wky
+    engine: mysql
+    host: rm-bp1980qxn7b4kkeaslo.mysql.rds.aliyuncs.com
+    port: 3306
+    user: db_viewer
+    password: "2ZywvdxCqN2"
+    databases: [jy_dcs, jy_wms, jy_glp, jy_tms, jy_feixian, feixian_wms, feixian_pms, scm_wms, scm_scs, scm_tms, fire_im, t_quanyou2, tyloo]
+    note: 万客缘供应链/仓储库（官方 mysql-wms-scm；jy_wms 与 scm_* 系在此）
+
+  wky-market:
+    <<: *def
+    env: wky
+    engine: mysql
+    host: rm-bp1g79f3c787j2n80zo.mysql.rds.aliyuncs.com
+    port: 3306
+    user: db_viewer
+    password: "2ZywvdxCqN2"
+    databases: [jy_market, cr_debug]
+    note: 万客缘营销库（官方 mysql-market）
+
+  wky-search:
+    <<: *def
+    env: wky
+    engine: mysql
+    host: rm-bp12n70q94053f7jzto.mysql.rds.aliyuncs.com
+    port: 3306
+    user: db_viewer
+    password: "2ZywvdxCqN2"
+    databases: [jy_search, zq_product, ty_product, resource_mig]
+    note: 万客缘搜索/商品库（官方 mysql-product）
+
+  wky-star:
+    <<: *def
+    env: wky
+    engine: mysql
+    host: rm-bp1zm0l0jmh3m757n6o.mysql.rds.aliyuncs.com
+    port: 3306
+    user: db_viewer
+    password: "2ZywvdxCqN2"
+    databases: [jy_recommend]
+    note: 万客缘星级实例（官方 mysql-star；实测只有 jy_recommend，无 jy_star）
+
+  wky-hive:
+    <<: *def
+    env: wky
+    engine: hive
+    host: 121.40.245.183
+    port: 10000
+    user: root
+    password: ""
+    databases: [app, gdm, fdm, dim, ods, bdm]
+    note: 万客缘 Hive 数仓（走 hive39 venv）
+
+  wky-es:
+    <<: *def
+    env: wky
+    engine: es
+    host: 10.128.62.73
+    port: 9200
+    user: ""
+    password: ""
+    note: 万客缘 ES（pre/地利共用）
+
+  # ---------------- 好码特 hmt ----------------
+  hmt-data:
+    <<: *def
+    env: hmt
+    engine: mysql
+    host: rm-uf6muy3y684w0479qjo.mysql.rds.aliyuncs.com
+    port: 3306
+    user: db_viewer
+    password: "2ZywvdxCqN2"
+    databases: [jy_search, zq_product, ty_product]
+    note: 好码特商品/搜索库（官方 mysql-product；键名沿用旧称，非数据平台库）
+
+  hmt-order:
+    <<: *def
+    env: hmt
+    engine: mysql
+    host: rm-uf6kt936oqs61bt590o.mysql.rds.aliyuncs.com
+    port: 3306
+    user: db_viewer
+    password: "2ZywvdxCqN2"
+    databases: [jy_order, jy_order_history, jy_recommend]
+    note: 好码特订单库（官方 mysql-order；含 jy_recommend）
+
+  hmt-batchstk:
+    <<: *def
+    env: hmt
+    engine: mysql
+    host: rm-uf6j5t5gcvfkq4703co.mysql.rds.aliyuncs.com
+    port: 3306
+    user: db_viewer
+    password: "2ZywvdxCqN2"
+    databases: [jy_batchstk, jy_salestk, jy_after_sale, jy_aps, jy_b2b, jy_hp, jy_pms, jy_roc, jy_vc, jy_yunbao, yb_merchant, yb_oms, yb_pmc, t_payment, jy_eyun_ass, jy_dmt, jy_catering]
+    note: 好码特批次库存库（官方 mysql-many-pms；jy_pms 供应商域在此）
+
+  hmt-finance:
+    <<: *def
+    env: hmt
+    engine: mysql
+    host: rm-uf6220d4knio7q1q7co.mysql.rds.aliyuncs.com
+    port: 3306
+    user: db_viewer
+    password: "2ZywvdxCqN2"
+    databases: [jy_finance, jy_finance_backup]
+    note: 好码特财务库（官方 mysql-finance）
+
+  hmt-proto:
+    <<: *def
+    env: hmt
+    engine: mysql
+    host: rm-uf6ygz9g8a2mc395e7o.mysql.rds.aliyuncs.com
+    port: 3306
+    user: db_viewer
+    password: "2ZywvdxCqN2"
+    databases: [baize, jy_ems, jy_msg, jy_monitor, jy_sso, jy_workflow, jy_dlink, jy_batch_file, jy_print_cloud, b_print, spider_flow, t-gateway, fire_im, otter, nacos_config142, xxl_job_202, xxl_job_220]
+    note: 好码特系统实例（官方 mysql-system；实例上无 jy_proto）
+
+  hmt-dcs:
+    <<: *def
+    env: hmt
+    engine: mysql
+    host: rm-uf6016128061p72r69o.mysql.rds.aliyuncs.com
+    port: 3306
+    user: db_viewer
+    password: "2ZywvdxCqN2"
+    databases: [jy_dcs, jy_wms, jy_glp, jy_tms, jy_feixian, feixian_wms, feixian_pms, scm_wms, scm_scs, scm_tms, t_quanyou2, tyloo]
+    note: 好码特供应链/仓储库（官方 mysql-wms-scm）
+
+  hmt-market:
+    <<: *def
+    env: hmt
+    engine: mysql
+    host: rm-uf61e2fl73rbsw14duo.mysql.rds.aliyuncs.com
+    port: 3306
+    user: db_viewer
+    password: "2ZywvdxCqN2"
+    databases: [jy_market]
+    note: 好码特营销库（官方 mysql-market）
+
+  hmt-star:
+    <<: *def
+    env: hmt
+    engine: mysql
+    host: rm-uf6cq2nkk9pdl16yhio.mysql.rds.aliyuncs.com
+    port: 3306
+    user: db_viewer
+    password: "2ZywvdxCqN2"
+    databases: [jy_data, jy_azkaban, jy_data_tek, jy_data_bak, jy_cboard]
+    note: 好码特数据平台库（官方 mysql-data；键名沿用旧称，非星级库）
+
+  # ---------------- 测试 test ----------------
+  test-viewer:
+    <<: *def
+    env: test
+    engine: mysql
+    host: 121.40.129.69
+    port: 3306
+    user: db_viewer
+    password: "Bn&KITDHz6"
+    databases: []
+    readonly: true
+    note: 测试环境（只读账号，权游 t_quanyou2 等，库不限）
+
+  test-root:
+    <<: *def
+    env: test
+    engine: mysql
+    host: 121.40.129.69
+    port: 3306
+    user: root
+    password: "JinyiT11"
+    databases: []
+    readonly: true
+    note: 测试环境（高权限账号，护栏依然强制只读）
+
+  wky-test-root:
+    <<: *def
+    env: test
+    engine: mysql
+    host: 120.27.220.103
+    port: 3306
+    user: root
+    password: "JinyiT11"
+    databases: []
+    readonly: true
+    note: 万客缘/TestHW 测试环境（内网 10.50.1.131；本机当前不可达）

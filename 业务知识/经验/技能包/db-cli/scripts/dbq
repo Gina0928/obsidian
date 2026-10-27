@@ -1,0 +1,26 @@
+#!/bin/sh
+# dbq 便捷入口：省掉每次写一长串解释器 + 脚本路径
+#
+# Windows（Git Bash）想更短就在 ~/.bashrc 加一行：
+#   alias dbq=~/.workbuddy/skills/db-cli/scripts/dbq
+# PowerShell 想用则在 $PROFILE 里加：
+#   function dbq { & "$env:USERPROFILE\.workbuddy\skills\db-cli\scripts\dbq" @args }
+# 之后直接 dbq yas/jy_order "SELECT 1"
+
+# 跨平台解释器探测：优先环境变量 PY，其次按 Windows / Unix 的 venv 布局探测，
+# 最后退回 PATH 里的 python3。
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+# Git Bash/MSYS 下 pwd 给的是 /c/... 形式，Windows python.exe 不认，转成 C:/... 
+command -v cygpath >/dev/null 2>&1 && SCRIPT_DIR="$(cygpath -m "$SCRIPT_DIR")"
+
+if [ -n "$PY" ] && [ -x "$PY" ]; then
+    :
+elif [ -x "$HOME/.workbuddy/binaries/python/envs/default/Scripts/python.exe" ]; then
+    PY="$HOME/.workbuddy/binaries/python/envs/default/Scripts/python.exe"
+elif [ -x "$HOME/.workbuddy/binaries/python/envs/default/bin/python" ]; then
+    PY="$HOME/.workbuddy/binaries/python/envs/default/bin/python"
+else
+    PY=python3
+fi
+
+exec "$PY" "$SCRIPT_DIR/dbquery.py" "$@"

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>勘码 · 接口对接文档 — {{project}}</title>
+<style>
+  :root{
+    --bg:#ffffff; --panel:#f7f8fa; --border:#e3e6eb; --text:#1f2329;
+    --muted:#646a73; --accent:#2b6cff;
+    --ok:#1f9d55; --warn:#e8730c; --change:#c0392b;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.6;font-size:14px}
+  .wrap{max-width:1080px;margin:0 auto;padding:32px 28px 64px}
+  header{border-bottom:2px solid var(--accent);padding-bottom:14px;margin-bottom:8px}
+  header h1{margin:0 0 4px;font-size:24px}
+  header .meta{color:var(--muted);font-size:13px}
+  .intro{background:var(--panel);border:1px solid var(--border);border-radius:10px;
+    padding:14px 18px;margin:20px 0;color:var(--muted);font-size:13px}
+  .iface{border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin:22px 0;background:var(--bg)}
+  .iface .idline{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+  .iface .idline h2{margin:0;font-size:18px;border:none;padding:0}
+  .proto{font-size:12px;font-weight:700;padding:3px 10px;border-radius:6px;color:#fff;white-space:nowrap}
+  .proto.rest{background:var(--accent)}
+  .proto.dubbo{background:#7b54d6}
+  .method{font-family:Menlo,monospace;font-size:14px;font-weight:700;color:var(--accent)}
+  h3{font-size:15px;margin:18px 0 8px;padding-left:10px;border-left:4px solid var(--accent);color:var(--text)}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px;
+    background:var(--bg);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+  th,td{border:1px solid var(--border);padding:8px 10px;text-align:left;vertical-align:top}
+  th{background:var(--panel);font-weight:600;color:var(--muted)}
+  .req{color:var(--p0,#d92e2e);font-weight:700}
+  pre{background:#0f1115;color:#e6e6e6;padding:12px 14px;border-radius:8px;
+    overflow:auto;font-size:12.5px;line-height:1.5;
+    font-family:"SF Mono",Menlo,Consolas,monospace}
+  code{background:var(--panel);padding:1px 5px;border-radius:4px;font-size:12.5px}
+  .change{background:#fdecea;border:1px solid #f5b5ae;border-left:4px solid var(--change);
+    border-radius:8px;padding:12px 16px;margin:10px 0}
+  .change h4{margin:0 0 8px;font-size:14px;color:var(--change)}
+  .change .old{color:#8a9099;text-decoration:line-through}
+  .change .new{color:var(--change);font-weight:700}
+  .change ul{margin:6px 0 0;padding-left:20px}
+  .change li{margin:4px 0}
+  .note{background:#fff8e6;border:1px solid #f3d98b;border-radius:8px;padding:10px 14px;color:#6b5300;font-size:13px}
+  .logic{background:#eef4ff;border:1px solid #c9dbfa;border-radius:8px;padding:12px 16px;margin:10px 0;font-size:13px}
+  .logic h4{margin:0 0 6px;font-size:14px;color:var(--accent)}
+  .logic .row{margin:8px 0}
+  .logic .row b{color:var(--text)}
+  .logic ul{margin:6px 0 0;padding-left:20px}
+  .logic li{margin:3px 0}
+  .logic .impact{color:var(--warn);font-weight:600}
+  .dubbo{background:#f6f2ff;border:1px solid #d9cdf5;border-radius:8px;padding:12px 16px;margin:10px 0}
+  footer{margin-top:48px;padding-top:14px;border-top:1px solid var(--border);color:var(--muted);font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>勘码 · 接口对接文档</h1>
+    <div class="meta">项目：{{project}} ｜ 生成时间：{{timestamp}} ｜ 评审分支：{{branch}}</div>
+  </header>
+
+  <div class="intro">
+    本文档由勘码（KanMa）依据本次评审 diff 自动生成，<b>首要用途是指导下游系统对接</b>。
+    仅收录本次发生入参变化的对外接口（REST / Dubbo），每个接口均为一份<b>完整、自包含</b>的对接规格，
+    下游凭本文档即可独立完成对接，无需再读源码。每个接口均基于核心代码逻辑补充「<b>功能与业务逻辑</b>」说明，
+    并对每个入参标注「<b>业务含义 / 业务影响</b>」，使对接方既知契约、也懂业务。标注「本次变更点」的小节为相对上一版的契约变化，下游对接时重点关注。
+  </div>
+
+  <!-- 每个变更接口一个 .iface 块；下方为单接口模板，agent 按实际接口数量复制填充 -->
+  <div class="iface">
+    <div class="idline">
+      <h2>{{interface_name}}</h2>
+      <span class="proto {{proto_class}}">{{proto_label}}</span>
+      <span class="method">{{http_method_and_path}}</span>
+    </div>
+
+    <h3>1. 接口标识与协议</h3>
+    <table>
+      <tr><th style="width:160px">请求方法</th><td>{{http_method}}</td></tr>
+      <tr><th>请求路径</th><td>{{request_path}}</td></tr>
+      <tr><th>协议类型</th><td>{{protocol_type}}</td></tr>
+      <tr><th>接口标识</th><td>{{interface_identity}}</td></tr>
+    </table>
+
+    <h3>2. 功能与业务逻辑（基于核心代码逻辑）</h3>
+    <div class="logic">
+      <div class="row"><b>功能概述：</b>{{function_overview}}</div>
+      <div class="row"><b>核心业务流转：</b><ul>{{core_flow}}</ul></div>
+      <div class="row"><b>关键业务规则：</b><ul>{{key_rules}}</ul></div>
+      <div class="row"><b>业务影响：</b><span class="impact">{{business_impact}}</span></div>
+    </div>
+
+    <h3>3. 入参清单（表格：参数名 / 类型 / 备注，须完整）</h3>
+    <table>
+      <thead><tr><th>参数名</th><th>类型</th><th>备注（业务含义与限制条件）</th></tr></thead>
+      <tbody>{{param_rows}}</tbody>
+    </table>
+    <p class="note">参数表须包含<b>代码中有使用的所有参数</b>：除请求体字段外，还须覆盖 Query 参数、PathVariable、从 Header 派生的取值、`request.getAttribute` / 请求属性、网关透传字段等；凡代码实际读取/使用的参数一律列入（即便未在 DTO 显式声明，如通过 `getParameter` / 反射 / Map 取值读取的也须收录并注明来源），以代码实际使用为准，而非仅以 DTO 声明为准。备注须集中说明：① 业务含义（字段在业务上代表什么）；② 限制条件（必填性、取值范围/长度/格式/枚举/正则/黑白名单等静态校验规则，以及取值不合法的业务影响）。所有内容须从落地代码推导。</p>
+
+    <h3>4. 请求头（若接口链路读取则完整列出）</h3>
+    {{headers_block}}
+
+    <h3>5. 出参结构</h3>
+    <table>
+      <thead><tr><th>字段名</th><th>类型</th><th>业务含义</th></tr></thead>
+      <tbody>{{response_rows}}</tbody>
+    </table>
+    <p class="note">关键 rtnStatus 取值：{{rtnstatus_desc}}</p>
+
+    <h3>6. 示例（经冒烟验证）</h3>
+    <p><b>请求</b>（完整请求头 + 合法入参，取自真实冒烟数据）：</p>
+    <pre>{{example_request}}</pre>
+    <p><b>响应</b>：</p>
+    <pre>{{example_response}}</pre>
+
+    {{dubbo_block}}
+
+    <div class="change">
+      <h4>本次变更点（⚠ 下游对接重点关注）</h4>
+      <ul>{{change_items}}</ul>
+    </div>
+  </div>
+
+  <!-- Dubbo 接口接入信息模板（仅 Dubbo 接口保留，REST 接口整段删除） -->
+  <!--
+  <div class="dubbo">
+    <h3>7. Dubbo 接入信息（仅 Dubbo 接口）</h3>
+    <p><b>依赖 Maven 坐标</b>：</p>
+    <pre>{{maven_coord}}</pre>
+    <p><b>消费端引用示例（@DubboReference / dubbo:reference）</b>：</p>
+    <pre>{{dubbo_reference}}</pre>
+  </div>
+  -->
+
+  <footer>本接口对接文档由勘码（KanMa）依据 AGENTS.md 硬规则与本次 diff 生成，数据均来自源码与真实冒烟，无外部依赖。</footer>
+</div>
+</body>
+</html>

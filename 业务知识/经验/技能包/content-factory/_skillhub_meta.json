@@ -1,0 +1,10 @@
+{
+  "name": "内容工厂",
+  "installedAt": 1784270892227,
+  "source": "marketplace",
+  "version": "1.0.0",
+  "skillId": "skill_2053081490234478592",
+  "description_zh": "多智能体内容生产系统，一份素材生成多种格式",
+  "description_en": "Multi-agent content production system, one source to many formats",
+  "installedContentHash": "sha256:a195a1aa8e7991391be69e2b83049245b6d05ce02af9c8f80f0fb00068690b90"
+}
